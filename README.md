@@ -13,6 +13,8 @@ git config --global user.email "YOUREMAIL"
 ```js
 git config credential.helper manager
 ```
-manager对应的就是windows凭据工具，在git需要账户密码的时候，会先从指定的凭据管理器中查找凭据，如果查找不到，会弹框要求输入并记录，第二次访问的时候就可以使用相应的凭据, 所以在切换账户之后要记得清理本地缓存（这里对应的就是缓存凭据）。
+manager对应的就是windows凭据工具，在git需要账户密码的时候，会先从指定的凭据管理器中查找凭据，如果查找不到，会弹框要求输入并记录，第二次访问的时候就可以使用相应的凭据，所以在切换账户之后要记得清理本地缓存（这里对应的就是缓存凭据）。
+
+Refer to: [git多用户切换](https://blog.csdn.net/lqlqlq007/article/details/80613272?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-1)
 
 
