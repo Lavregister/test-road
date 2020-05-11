@@ -271,5 +271,5 @@ Refer: [Maven命令行使用：mvn clean install（安装）](https://www.cnblog
 
 使用命令java -jar <JARFILE> 运行target目录中的文件，springboot自己集成了tomcat server，在命令行可以看到在8080端口运行，打开localhost:8080可以看到Hello World
 
-Refer: [Spring Boot教程](
+Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootstrapping.html)
 
