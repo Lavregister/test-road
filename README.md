@@ -183,3 +183,93 @@ Maven是一个软件项目管理和综合工具，在我目前用的范围就是
 
 Refer to: [Maven教程](https://www.yiibai.com/maven)
 
+## 四、Spring Boot
+
+### 1.1 简介
+
+### 1.2 第一个SpringBoot程序
+
+#### 1.2.1 创建项目
+
+用IDEA创建一个springboot程序：File -> New -> Project -> Spring Assistant.
+
+- troubleshooting:
+
+如果找不到Spring Assistant，在File -> Setting -> Plugins 搜索 Spring Assistant.
+
+我在这个步骤中安装了还是没有显示Spring Assistant选项，猜想IDEA版本太老，重装了最新版就ok了。
+
+#### 1.2.2 编写一个Rest端点
+
+在Spring Boot主类添加一个Hello World Rest端点：
+
+1. 在类顶部添加 @RestController 注释
+2. 使用 @RequestMapping 注释编写Request URI方法，这个方法返回Hello World字符串
+3. 类文件如下：
+
+```java
+package com.example.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class SptingBootTestApplication {
+
+	public static void main(String[] args) {
+		System.out.println("HelloWorld!");
+		SpringApplication.run(SptingBootTestApplication.class, args);
+	}
+
+	@RequestMapping(value = "/")
+	public String hello() {
+		return "Hello World";
+	}
+
+}
+```
+
+#### 1.2.3 创建一个可执行的JAR
+
+在项目根目录使用maven命令 mvn clean install打包构建，这个命令的背后处理了（按顺序）：
+
+1. 使用清理插件：maven-clean-plugin:2.5 执行清理删除已有target目录
+2. 使用资源插件：maven-resources-plugin:2.6 执行资源文件的处理
+3. 使用编译插件：maven-compiler-plugin:3.1编译所有源文件生成class文件至target\classes目录下
+4. 使用资源插件：maven-resources-plugin:2.6执行测试资源文件的处理
+5. 使用编译插件：maven-compiler-plugin:3.1编译测试目录下的所有源代码
+6. 使用插件：maven-surefire-plugin:2.12运行测试用例
+7. 使用插件：maven-jar-plugin:2.4对编译后生成的文件进行打包，包名称默认为：artifactId-version，比如本例生成的jar文件：demo-0.0.1-SNAPSHOT，包文件保存在target目录下
+8. 使用maven-install-plugin:2.4把上述打包生成的jar包和pom文件安装到本地的仓库中（一般默认的路径为：%HOMEPATH%\.m2\repository\pom中groupId按.分隔的目录层次\pom中的artifactId\pom中的version\jar包的名称）
+
+Refer: [Maven命令行使用：mvn clean install（安装）](https://www.cnblogs.com/frankyou/p/6062414.html)
+
+- troubleshooting：
+
+  1. build的时候找不到插件maven-surefire-plugin，在pom.xml中加上了
+
+  ```xml
+  <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-surefire-plugin</artifactId>
+          <configuration>
+          	<skipTests>true</skipTests>
+          </configuration>
+  </plugin>
+  ```
+
+  2. 找不到@RequestMapping，进而发现IDEA不提示错误，检查两个地方：
+
+     a. File -> Power Save Mode，这个模式开启的话IDEA不会自动编译
+
+     b. File -> Setting -> Build, Execution, Deployment -> Build project automatically 打开，然后重启IDEA
+
+#### 1.2.4 用java运行hello world
+
+使用命令java -jar <JARFILE> 运行target目录中的文件，springboot自己集成了tomcat server，在命令行可以看到在8080端口运行，打开localhost:8080可以看到Hello World
+
+Refer: [Spring Boot教程](
+
