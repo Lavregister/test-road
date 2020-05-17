@@ -273,3 +273,16 @@ Refer: [Maven命令行使用：mvn clean install（安装）](https://www.cnblog
 
 Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootstrapping.html)
 
+## 五、前端
+
+1. ### CSS
+
+- CSS Modules
+
+  > CSS Modules let you use the same CSS class name in different files without worrying about naming clashes. Learn more about CSS Modules [here](https://css-tricks.com/css-modules-part-1-need/).
+
+  这是一个用来scope css的，这个功能在react-script低于2.0.0的版本只能eject然后在webpack中去配置。
+
+  Refer: [Adding a CSS Modules Stylesheet](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/)
+
+  
