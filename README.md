@@ -275,7 +275,7 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
 
 ## 五、前端
 
-1. ### CSS
+### 1.1 CSS
 
 - CSS Modules
 
@@ -285,4 +285,19 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
 
   Refer: [Adding a CSS Modules Stylesheet](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/)
 
-  
+
+### 1.2 JavaScript
+
+- 关于setTimeout
+ ```javascript
+  const p1 = new Promise(function (resolve, reject) {
+    setTimeout(() => reject(new Error('fail')), 3000)
+  })
+ ```
+
+  setTimeout里面的第一个参数这样写而不直接写为reject(new Error('fail')是因为setTimeout的第一个参数是一个函数而不是函数的返回值，reject是一个函数，reject(new Error('fail'))是将new Error('fail')传入到reject中得到的返回值，像上面这段例子这样写，第一个参数就是一个函数，三秒之后执行这个函数，返回的是reject(new Error('fail'))的执行结果，即将当前Promise的状态变为reject
+
+- 关于promise(pending)
+
+  1. 调用`resolve`或`reject`并不会终结 Promise 的参数函数的执行
+
