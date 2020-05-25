@@ -373,7 +373,7 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
 
    
 
-   理解this.$el = $(this.el);
+   理解**this.$el = $(this.el);**
 
    等号右边是将this.edomd'd'd'dl这个dom ref转换成一个jQuery对象传给左边的this.$el，这个$el写法只是标志它是一个jQuery对象，并不强制要求，是人为的
 
