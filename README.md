@@ -301,3 +301,39 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
 
   1. 调用`resolve`或`reject`并不会终结 Promise 的参数函数的执行
 
+## 六、 NodeJS
+
+1. process.env
+
+   process是Node中的一个全局变量，其中process.env可以用来配置全局属性，可以在程序中配置例如：
+
+   ```javascript
+   process.env.TEST = 1;
+   ```
+
+   也可以配置在一个.env文件中，这时候要用到一个插件[dotenv](https://link.zhihu.com/?target=https%3A//github.com/motdotla/dotenv%23readme)，然后：
+
+   ```node
+   const dotenv = require("dotenv")
+   dotenv.config()
+   ```
+
+   就可以使用文件中配置的变量了
+
+## 七、JavaScript
+
+### 1.1 Promise
+
+#### 1.1.1 async/await
+
+- **被async标志的函数里面才可以用await**，这个点理解了很久，它需要和**await后面的函数**（可以是返回promise的函数，一般都这样用，也可以不是，但没意义）**会等待promise对象执行完毕并返回**共同理解，从这个async函数外部理解，对于调用这个async函数的调用者来说，应该意识到这个函数可能要花费较长的时间，因为里面的await是“同步的”，调用了这个函数之后可以接着处理其他事情，但是这个函数里面是一种“同步”的状态。
+
+  Refer: [用 async/await 来处理异步](https://www.cnblogs.com/SamWeb/p/8417940.html)
+
+- [async函数的返回值](https://segmentfault.com/a/1190000020782681)总结得非常好，有几个概括：
+
+  1. async函数的返回值是Promise对象，可以用then方法指定下一步的操作。async函数可以看做多个异步操作，包装成一个Promise对象，await命令就是内部then命令的语法糖。
+  2. async函数返回一个Promise对象，可以使用then方法添加回调函数。当函数执行的时候，一旦遇到await就会先返回，等到异步操作完成，再接着执行函数体后面的语句。
+  3. 返回Promise对象
+     async函数返回一个Promise对象。
+     async函数内部return语句返回的值，会成为then方法回调函数的参数。
