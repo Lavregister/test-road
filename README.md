@@ -337,3 +337,60 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
   3. 返回Promise对象
      async函数返回一个Promise对象。
      async函数内部return语句返回的值，会成为then方法回调函数的参数。
+
+## 八、 编辑器问题
+
+1. Visual Studio Code
+
+   - [ts] 对修饰器的实验支持是一项将在将来版本中更改的功能。设置 "experimentalDecorators" 选项以删除此警告。
+
+     解决方案：在User Settings里面加入
+
+     ```
+     "javascript.implicitProjectConfig.experimentalDecorators": true
+     ```
+
+## 九、React官网通读
+
+1. [与第三方库协同](https://react.docschina.org/docs/integrating-with-other-libraries.html) 和jQuery库集成的时候出现了
+
+   ```javascript
+   class SomePlugin extends React.Component {
+     componentDidMount() {
+       this.$el = $(this.el);
+       this.$el.somePlugin();
+     }
+   
+     componentWillUnmount() {
+       this.$el.somePlugin('destroy');
+     }
+   
+     render() {
+       return <div ref={el => this.el = el} />;
+     }
+   }
+   ```
+
+   
+
+   理解this.$el = $(this.el);
+
+   等号右边是将this.edomd'd'd'dl这个dom ref转换成一个jQuery对象传给左边的this.$el，这个$el写法只是标志它是一个jQuery对象，并不强制要求，是人为的
+
+   总结：
+
+   - dom对象转jQuery对象：
+
+   ```javascript
+   var $obj = $(domObj);
+   ```
+
+   - jQuery对象转dom对象：
+
+   ```javascript
+   var doc2=$("#idDoc2")[0];   //转换jQuery对象为DOM对象  
+   doc2.innerHTML="这是jQuery的第一个DOM对象"  
+     //使用jQuery对象本身提供的get函数来返回指定集合位置的DOM对象  
+   var doc2=$("#idDoc2").get(0);  
+   doc2.innerHTML="这是jQuery的第二个DOM对象"  
+   ```
