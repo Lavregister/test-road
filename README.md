@@ -373,45 +373,138 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
 
 ## 九、React官网通读
 
-1. [与第三方库协同](https://react.docschina.org/docs/integrating-with-other-libraries.html) 和jQuery库集成的时候出现了
+1. [与第三方库协同](https://react.docschina.org/docs/integrating-with-other-libraries.html) 
+
+   和jQuery库集成的时候出现了
+
+```javascript
+class SomePlugin extends React.Component {
+  componentDidMount() {
+    this.$el = $(this.el);
+    this.$el.somePlugin();
+  }
+
+  componentWillUnmount() {
+    this.$el.somePlugin('destroy');
+  }
+
+  render() {
+    return <div ref={el => this.el = el} />;
+  }
+}
+```
+
+
+
+- 理解**this.$el = $(this.el);**
+
+  等号右边是将this.edomd'd'd'dl这个dom ref转换成一个jQuery对象传给左边的this.$el，这个$el写法只是标志它是一个jQuery对象，并不强制要求，是人为的
+
+  总结：
+
+  - dom对象转jQuery对象：
+
+    ```javascript
+    var $obj = $(domObj);
+    ```
+
+  - jQuery对象转dom对象：
+
+    ```javascript
+    var doc2=$("#idDoc2")[0];   //转换jQuery对象为DOM对象  
+    doc2.innerHTML="这是jQuery的第一个DOM对象"  
+      //使用jQuery对象本身提供的get函数来返回指定集合位置的DOM对象  
+    var doc2=$("#idDoc2").get(0);  
+    doc2.innerHTML="这是jQuery的第二个DOM对象"  
+    ```
+
+
+
+2. [高阶组件](https://react.docschina.org/docs/higher-order-components.html)
 
    ```javascript
-   class SomePlugin extends React.Component {
-     componentDidMount() {
-       this.$el = $(this.el);
-       this.$el.somePlugin();
-     }
-   
-     componentWillUnmount() {
-       this.$el.somePlugin('destroy');
-     }
-   
-     render() {
-       return <div ref={el => this.el = el} />;
-     }
-   }
+   // ... 你可以编写组合工具函数
+   // compose(f, g, h) 等同于 (...args) => f(g(h(...args)))
+   const enhance = compose(
+     // 这些都是单参数的 HOC
+     withRouter,
+     connect(commentSelector)
+   )
+   const EnhancedComponent = enhance(WrappedComponent)
    ```
 
    
 
-   理解**this.$el = $(this.el);**
+- 理解**compose**函数
 
-   等号右边是将this.edomd'd'd'dl这个dom ref转换成一个jQuery对象传给左边的this.$el，这个$el写法只是标志它是一个jQuery对象，并不强制要求，是人为的
+  要理解compose函数先要理解Array.prototype.reduce, reduce函数的用法：
 
-   总结：
-
-   - dom对象转jQuery对象：
-
-   ```javascript
-   var $obj = $(domObj);
+   ```js
+   arr.reduce(callback(accumulator, currentValue), initialValue);
    ```
 
-   - jQuery对象转dom对象：
+   	reduce函数的作用就是将数组中的每个元素都用累积器处理一遍，需要注意一下第一对被处理的值：
 
-   ```javascript
-   var doc2=$("#idDoc2")[0];   //转换jQuery对象为DOM对象  
-   doc2.innerHTML="这是jQuery的第一个DOM对象"  
-     //使用jQuery对象本身提供的get函数来返回指定集合位置的DOM对象  
-   var doc2=$("#idDoc2").get(0);  
-   doc2.innerHTML="这是jQuery的第二个DOM对象"  
-   ```
+1. 如果有initialValue，accumulator取initialValue，currentValue取数组arr的第一个值
+2. 如果没有initialValue，accumulator取数组arr第一个值，currentValue取第二个值
+
+   在每一轮循环中，将这两个值用callback处理，返回下一次循环中的initialValue，下一次循环中的currentValue是上一轮的下一个值
+
+​	一个例子：
+
+```javascript
+var series = ['a1', 'a3', 'a1', 'a5',  'a7', 'a1', 'a3', 'a4', 'a2', 'a1'];
+
+var result= series.reduce(function (accumulator, current) {
+    if (current in accumulator) {
+        accumulator[current]++;
+    }
+    else {
+        accumulator[current] = 1;
+    }
+    return accumulator;
+}, {});
+
+console.log(JSON.stringify(result));
+// {"a1":4,"a3":2,"a5":1,"a7":1,"a4":1,"a2":1}
+```
+
+   这里要注意reduce的初始值initialValue: {}，函数中用方括号给对象赋值
+
+------
+
+​	然后再来看compose函数，参考源码：
+
+```javascript
+/**
+ * Composes single-argument functions from right to left. The rightmost
+ * function can take multiple arguments as it provides the signature for
+ * the resulting composite function.
+ *
+ * @param {...Function} funcs The functions to compose.
+ * @returns {Function} A function obtained by composing the argument functions
+ * from right to left. For example, compose(f, g, h) is identical to doing
+ * (...args) => f(g(h(...args))).
+ */
+
+export default function compose(...funcs) {
+  if (funcs.length === 0) {
+    return arg => arg
+  }
+
+  if (funcs.length === 1) {
+    return funcs[0]
+  }
+
+  return funcs.reduce((a, b) => (...args) => a(b(...args)))
+}
+```
+
+funcs依次包裹后面函数，最后一个函数可以接收多个参数，但前面的函数只能接受单个参数，并且输入值和输出值都一样，是函数，例如：
+
+```javascript
+compose(fn1, fn2, fn3) (...args) = > fn1(fn2(fn3(...args)))
+```
+
+应用到Redux中的connect中，官网上有一句很重要的话：**像 `connect` 函数返回的单参数 HOC 具有签名 `Component => Component`。 输出类型与输入类型相同的函数很容易组合在一起。**
+
