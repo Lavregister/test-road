@@ -285,10 +285,31 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
 
   Refer: [Adding a CSS Modules Stylesheet](https://create-react-app.dev/docs/adding-a-css-modules-stylesheet/)
 
+- Flex布局
+
+  - 基本概念：flex container/main axis/cross axis/item
+  - 容器属性：
+    - flex-direction: row|row-reverse|column|column-reverse 主轴方向
+    - flex-wrap: nowrap|wrap|wrap-reverse 如果一条轴线排列不下如何换行
+    - flex-flow: (row nowrap) flex-direction和flex-wrap的简写形式
+    - justify-content: flex-start|flex-end|center|space-between|space-around 项目在主轴上的对齐方式
+    - align-items: flex-start|flex-end|center|baseline|stretch 项目在交叉轴上的对齐方式
+    - align-content: flex-start|flex-end|center|space-between|space-around|stretch 多根轴线的对齐方式
+  - 项目属性：
+    - order: integer 定义项目排列顺序，数值越小，排列越靠前，default: 0
+    - flex-grow: 项目放大比例，默认为0，即即使存在剩余空间，也不放大
+    - flex-shrink: 项目缩小比例，默认为1，即如果空间不足，项目缩小，注: 负值无效
+    - flex-basis: 定义在分配多余空间之前，项目占主轴的比例，默认值auto，也可以设置固定值
+    - flex: 是flex-grow, flex-shrink,flex-basis的简写，默认0 1 auto，建议优先使用而不是分开写
+    - align-self: auto|flex-start|flex-end|center|baseline|stretch 允许单个项目有与其他项目不同对齐方式，可覆盖align-items属性，默认值为auto，表示继承父元素align-items属性，没有父元素，则等同于stretch
+
+  Refer: [flex布局](https://www.jianshu.com/p/4290522e1560) 
+
 
 ### 1.2 JavaScript
 
 - 关于setTimeout
+
  ```javascript
   const p1 = new Promise(function (resolve, reject) {
     setTimeout(() => reject(new Error('fail')), 3000)
