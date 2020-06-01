@@ -446,6 +446,7 @@ class SomePlugin extends React.Component {
    	reduce函数的作用就是将数组中的每个元素都用累积器处理一遍，需要注意一下第一对被处理的值：
 
 1. 如果有initialValue，accumulator取initialValue，currentValue取数组arr的第一个值
+
 2. 如果没有initialValue，accumulator取数组arr第一个值，currentValue取第二个值
 
    在每一轮循环中，将这两个值用callback处理，返回下一次循环中的initialValue，下一次循环中的currentValue是上一轮的下一个值
@@ -508,3 +509,11 @@ compose(fn1, fn2, fn3) (...args) = > fn1(fn2(fn3(...args)))
 
 应用到Redux中的connect中，官网上有一句很重要的话：**像 `connect` 函数返回的单参数 HOC 具有签名 `Component => Component`。 输出类型与输入类型相同的函数很容易组合在一起。**
 
+Refer: [函数式编程之compose](https://blog.csdn.net/astonishqft/article/details/82791622)
+
+3. [判断出胜者](https://react.docschina.org/tutorial/tutorial.html#declaring-a-winner)
+
+这里需要写一个判断谁是胜者的util函数，我用箭头函数形式写在最底部，程序一直提示我，“ReferenceError: Cannot access 'calculateWinner' before initialization”，理解了一下主要有下面几个知识点：
+
+- 箭头函数是匿名的，写函数声明只能用function关键字
+- 函数声明会被提升，函数表达式不会，我写的const calculateWinner = (squares) => {}就是一种函数表达式
