@@ -517,3 +517,19 @@ Refer: [函数式编程之compose](https://blog.csdn.net/astonishqft/article/det
 
 - 箭头函数是匿名的，写函数声明只能用function关键字
 - 函数声明会被提升，函数表达式不会，我写的const calculateWinner = (squares) => {}就是一种函数表达式
+
+## 十、项目中遇到的问题
+
+1. 音频编码
+
+   - Base64: 是一种用64个字符来表示任意二进制数据的方法，是一种二进制到字符串的转换方法。
+
+     Refer to: [base64](https://www.liaoxuefeng.com/wiki/897692888725344/949441536192576)
+
+   - Blob: Blob表示不可变的类似文件对象的原始数据，其实就是二进制数据，用Blob对象可以创建出临时url供视频音频图像文件播放：
+
+     ```javascript
+     const playUrl = window.URL.createObjectURL(dataURLtoBlob(base64Data));
+     ```
+
+     
