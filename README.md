@@ -371,7 +371,9 @@ Refer: [Spring Boot教程](https://www.yiibai.com/spring-boot/spring_boot_bootst
      "javascript.implicitProjectConfig.experimentalDecorators": true
      ```
 
-## 九、React官网通读
+## 九、React官网+注意事项
+
+### 1.1 官网通读
 
 1. [与第三方库协同](https://react.docschina.org/docs/integrating-with-other-libraries.html) 
 
@@ -511,12 +513,44 @@ compose(fn1, fn2, fn3) (...args) = > fn1(fn2(fn3(...args)))
 
 Refer: [函数式编程之compose](https://blog.csdn.net/astonishqft/article/details/82791622)
 
-3. [判断出胜者](https://react.docschina.org/tutorial/tutorial.html#declaring-a-winner)
+### 1.2 注意事项
 
-这里需要写一个判断谁是胜者的util函数，我用箭头函数形式写在最底部，程序一直提示我，“ReferenceError: Cannot access 'calculateWinner' before initialization”，理解了一下主要有下面几个知识点：
+1. 
 
-- 箭头函数是匿名的，写函数声明只能用function关键字
-- 函数声明会被提升，函数表达式不会，我写的const calculateWinner = (squares) => {}就是一种函数表达式
+   - React中event是SyntheticEvent，模拟出了DOM事件的所有能力
+   - 通过event.nativeEvent可以获取原生事件对象
+   - 所有的事件都被挂载到document上，event.currentTarget是document
+   - 和DOM事件不一样，这点和vue不一样
+
+2. React中的双向绑定（Vue中的v-model）是自己通过value和onChange事件组合而成的，表单的值必须通过value来指定，而不是直接写在标签内
+
+3. state是个**不可变值**，要用的时候不能改变原值
+
+   - 对于数组，不能使用push，pop，splice，可用concat, [...array], slice, filter，复杂操作先生成副本（slice, [...]）
+   - 对于对象，可以用Object.assign({}, this.state.object, {a: 100})或者 {...this.state.object, a: 100}来修改
+   - **state的值能且仅能被setState修改**
+
+4. setState有时候是异步操作(直接在代码中运用，这时候如果要立刻拿到state改变后的值，就在setState的回调里面拿)，有时候是同步操作，比如在setTimeout中，或者是自定义的DOM事件中
+
+5. setState传入**对象**的时候有可能会被合并，比如三次setState +1 操作，但是总的值却只加了1，这类似Object.assign，这时候应该给setState传入函数形式
+
+   ```
+   this.setState((prevState, props) => {
+   	return {
+   		count: prevState.count + 1
+   	}
+   })
+   ```
+
+6. 非受控组件，可以解释为无法用state控制的组件，有的场景必须要用到，比如说操作DOM，需要用ref获取到DOM元素，例如文件上传<input type=file>这类型的交互
+
+7. Portals使用场景：
+
+   - overflow: hidden 
+   - 父组件z-index值太小
+   - fixed需要放在body第一层级
+
+
 
 ## 十、项目中遇到的问题
 
@@ -532,4 +566,13 @@ Refer: [函数式编程之compose](https://blog.csdn.net/astonishqft/article/det
      const playUrl = window.URL.createObjectURL(dataURLtoBlob(base64Data));
      ```
 
+   - 后台返回的是二进制数据流，有一些方式可以直接将返回值设置成Blob对象
+
+     ```javascript
+     responeType: 'blob'
+     ```
+
+     原生的XMLHttpRequest支持，axios也支持，jquery不支持，extjs不支持
+
      
+
