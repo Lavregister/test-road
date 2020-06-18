@@ -573,6 +573,7 @@ Refer: [函数式编程之compose](https://blog.csdn.net/astonishqft/article/det
      ```
 
      原生的XMLHttpRequest支持，axios也支持，jquery不支持，extjs不支持
+   - audio标签可以动态加载src，audio底下的source中也可以，不过一定要把audio标签重新load一遍，还有就是audio中真正决定播放源的是currentSrc属性，这个属性是只读的，也就是说只能通过修改src再load的方式修改
 
      
 
